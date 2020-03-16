@@ -106,8 +106,8 @@ void loop() {
     M5.Lcd.drawCentreString(msgy,294,30,2);
     print_msg("Operation Start!"); 
 
+    // 変更点(2) ボタンに応じた処理
     //ボタンA処理
-    //0.3は実測値から閾値を設定した
     if(M5.BtnA.wasPressed()) {
       //離陸
       print_msg("TAKE OFF"); 
@@ -138,7 +138,7 @@ void loop() {
       tello_command_exec("land");
     }
 
-    // 変更点(2) 傾きに応じたコマンド送信
+    // 変更点(3) 傾きに応じたコマンド送信
     if (fabs(x)> 0.3 || fabs(y)> 0.3){
         // 傾きx,yに応じてrcコマンドの文字列を作成
         
