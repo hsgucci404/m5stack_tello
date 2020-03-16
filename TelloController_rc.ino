@@ -50,7 +50,7 @@ void setup() {
   M5.Lcd.setTextColor(TFT_BLACK,TFT_RED);
   M5.Lcd.drawCentreString(" LANDING  ",250,220,2);
   M5.Lcd.setTextColor(TFT_BLACK,TFT_CYAN);
-  M5.Lcd.drawCentreString(" ROTATION ",160,220,2);
+  M5.Lcd.drawCentreString("CW/CCW_U/D",160,220,2);
   //---方向矢印
   M5.Lcd.fillTriangle(159,40,189,60,129,60,TFT_GREEN);
   M5.Lcd.fillTriangle(159,160,189,140,129,140,TFT_GREEN);
@@ -62,15 +62,6 @@ void setup() {
   M5.Lcd.drawCentreString("BACK",160,120,2);
   M5.Lcd.drawCentreString("LEFT",120,92,2);
   M5.Lcd.drawCentreString("RIGHT",200,92,2);
-  //---FLIP文字
-  M5.Lcd.setTextColor(TFT_YELLOW,TFT_BLACK);
-  M5.Lcd.drawCentreString("FLIP: ",60,140,1);
-  M5.Lcd.drawCentreString("ButtonA + Direction",50,150,1);
-  //---UP/DOWN文字
-  M5.Lcd.setTextColor(TFT_YELLOW,TFT_BLACK);
-  M5.Lcd.drawCentreString("UP/DOWN: ",280,140,1);
-  M5.Lcd.drawCentreString("ButtonC + FORWARD",280,150,1);
-  M5.Lcd.drawCentreString("Up/Down",300,160,1);
   //---メッセージ領域
   M5.Lcd.drawRoundRect(0,180,319,30,4,TFT_WHITE);
   //---メッセージのタイトル文字
@@ -118,68 +109,46 @@ void loop() {
     //ボタンA処理
     //0.3は実測値から閾値を設定した
     if(M5.BtnA.wasPressed()) {
-      //Telloフリップと離陸
-      if (fabs(x)> 0.3){
-          if (x > 0){
-            //フリップ左
-            print_msg("LEFT FLIP"); 
-            tello_command_exec("flip l");
-          }
-          if (x < 0){
-            //フリップ右
-            print_msg("RIGHT FLIP"); 
-            tello_command_exec("flip r");
-          }
-      }
-      if (fabs(y)> 0.3){
-          if (y > 0){
-            //フリップ後
-            print_msg("BACK FLIP"); 
-            tello_command_exec("flip b");
-          }
-          if (y < 0){
-            //フリップ前
-            print_msg("FRONT FLIP"); 
-            tello_command_exec("flip f");
-          }
-      }else{
-        //離陸
-        print_msg("TAKE OFF"); 
-        tello_command_exec("takeoff");
-      }    
+      //離陸
+      print_msg("TAKE OFF"); 
+      tello_command_exec("takeoff");
     }
 
     //ボタンB処理
-    //時計回り45度回転
-    if(M5.BtnB.wasPressed()) {
-        print_msg("CW");
-        tello_command_exec("cw 45");
+    if(M5.BtnB.isPressed()) {
+      //---方向の文字 Bボタンを押しているとき
+      M5.Lcd.setTextColor(TFT_WHITE,TFT_BLACK);
+      M5.Lcd.drawCentreString("  DOWN  ",160,64,2);
+      M5.Lcd.drawCentreString("  UP  ",160,120,2);
+      M5.Lcd.drawCentreString(" CCW",120,92,2);
+      M5.Lcd.drawCentreString("  CW ",200,92,2);
+    } else {
+      //---方向の文字 通常時
+      M5.Lcd.setTextColor(TFT_WHITE,TFT_BLACK);
+      M5.Lcd.drawCentreString("FORWARD",160,64,2);
+      M5.Lcd.drawCentreString("BACK",160,120,2);
+      M5.Lcd.drawCentreString("LEFT",120,92,2);
+      M5.Lcd.drawCentreString("RIGHT",200,92,2);
     }
 
     //ボタンC処理    
     if(M5.BtnC.wasPressed()) {
       //着陸
-      if (fabs(y)> 0.3){
-        //上昇50cm
-        if (y > 0){
-          tello_command_exec("up 50");
-        }
-        //下降50cm
-        if (y < 0){
-          print_msg("DOWN");
-          tello_command_exec("down 50");
-        }
-      }else{
-        //着陸
-        print_msg("LAND");
-        tello_command_exec("land");
-      }
+      print_msg("LAND");
+      tello_command_exec("land");
     }
 
     // 変更点(2) 傾きに応じたコマンド送信
     if (fabs(x)> 0.3 || fabs(y)> 0.3){
-        sprintf(command_str,"rc %d %d 0 0",int(-x*100), int(-y*100) );  // 傾きx,yに応じてrcコマンドの文字列を作成
-        tello_command_exec(command_str);  // Telloに送信
+        // 傾きx,yに応じてrcコマンドの文字列を作成
+        
+        //ボタンB処理
+        if( M5.BtnB.isPressed() ) {
+            sprintf(command_str,"rc 0 0 %d %d",int(y*100), int(-x*100) ); // 上昇下降と旋回
+        } else {
+            sprintf(command_str,"rc %d %d 0 0",int(-x*100), int(-y*100) ); // 左右移動と前後進
+        }
+        tello_command_exec(command_str);  // rcコマンドを送信
     } else {
         // 傾いていない時は停止命令を送信し続ける
         tello_command_exec("rc 0 0 0 0");
