@@ -33,20 +33,20 @@ void setup() {
   //---タイトル
   M5.Lcd.fillRect(0,0,320,30,TFT_BLUE);
   M5.Lcd.drawCentreString("Tello Controller",160,2,4);
-  //---X, Yの表示
+  //---ジョイスティックXの表示
   M5.Lcd.setTextColor(TFT_YELLOW,TFT_BLACK);
   M5.Lcd.drawCentreString(" Joy-X : ",20,30,2);
   sprintf(msg_jx,"%-2.2f",ail);
   M5.Lcd.drawCentreString(msg_jx,88,30,2);
-  //---X, Y値の表示
+  //---ジョイスティックYの表示
   M5.Lcd.drawCentreString(" Joy-Y : ",240,30,2);
   sprintf(msg_jy,"%-2.2f",ele);
   M5.Lcd.drawCentreString(msg_jy,294,30,2);
-
+  //---加速度Xの表示
   M5.Lcd.drawCentreString(" Accel-X : ",20,50,2);
   sprintf(msg_ax,"%-2.2f",rud);
   M5.Lcd.drawCentreString(msg_ax,88,50,2);
-  //---X, Y値の表示
+  //---加速度Yの表示
   M5.Lcd.drawCentreString(" Accel-Y : ",240,50,2);
   sprintf(msg_ay,"%-2.2f",thr);
   M5.Lcd.drawCentreString(msg_ay,294,50,2);
@@ -125,7 +125,6 @@ void loop() {
   sprintf(msg_jy,"%-2.2f",ele);
   M5.Lcd.drawCentreString("      ",294,30,2);
   M5.Lcd.drawCentreString(msg_jy,294,30,2);
-
   sprintf(msg_ax,"%-2.2f",rud);
   M5.Lcd.drawCentreString("      ",88,50,2);
   M5.Lcd.drawCentreString(msg_ax,88,50,2);
