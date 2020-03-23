@@ -5,7 +5,7 @@
 #include <WiFi.h>
 #include <WiFiUdp.h>
 // TELLOのSSID
-const char* TELLO_SSID = "TELLO-DC80D8";  // 自分のTelloのWi-Fi SSIDを入力
+const char* TELLO_SSID = "TELLO-XXXXXX";  // 自分のTelloのWi-Fi SSIDを入力
 // TELLOのIP
 const char* TELLO_IP = "192.168.10.1";
 // TELLO_PORT
