@@ -3,7 +3,7 @@
 #include <WiFiUdp.h>
 
 // TELLO setting
-const char* TELLO_SSID = "TELLO-FD510B";  // Tello's SSID
+const char* TELLO_SSID = "TELLO-xxxxxx";  // Set your Tello's SSID
 const char* TELLO_IP = "192.168.10.1";    // TELLO IP
 const int PORT = 8889;                    // TELLO_PORT
 
@@ -34,7 +34,7 @@ void setup() {
   Wire.begin();
   WiFi.begin(TELLO_SSID, "");   // default Tello has no password
 
-  //WiFi conecttion
+  // wait WiFi conecttion
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
   }
